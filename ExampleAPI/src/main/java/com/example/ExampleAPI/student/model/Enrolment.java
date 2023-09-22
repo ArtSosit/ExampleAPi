@@ -2,6 +2,10 @@ package com.example.ExampleAPI.student.model;
 
 
 
+import java.time.LocalDate;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,20 +33,23 @@ public class Enrolment {
 	@Column(name = "id")
 	private long id;
 
-	@Id
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="student_id",nullable = false)
 	private Student student_id;
 
-	@Id
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="course_id" ,nullable = false)
 	private Course course_id;
+	
+	@CreationTimestamp
+    @Column(name="created_at",nullable = false,
+    updatable = false,insertable = false,
+    columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDate created_at = LocalDate.now();
 
-    @Column(name="created_at",nullable = false)
-    private String created_at;
-
-	public Enrolment(Student student_id, Course course_id, String created_at) {
+	public Enrolment(Student student_id, Course course_id, LocalDate created_at) {
 		super();
 		this.student_id = student_id;
 		this.course_id = course_id;

@@ -1,0 +1,24 @@
+package com.example.ExampleAPI.student.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.example.ExampleAPI.exception.BaseException;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class StudentException extends BaseException{
+
+	public StudentException(String code, HttpStatus status) {
+		super("student."+code, status);
+		// TODO Auto-generated constructor stub
+	}
+	public static StudentException emptyStudent() {
+		return new StudentException("findStudent.notFound",HttpStatus.BAD_REQUEST);
+	}
+
+}
