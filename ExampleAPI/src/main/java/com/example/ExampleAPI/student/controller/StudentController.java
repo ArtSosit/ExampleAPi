@@ -16,7 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.ExampleAPI.exception.BaseException;
+import com.example.ExampleAPI.student.business.BookBusiness;
+import com.example.ExampleAPI.student.business.CourseBusiness;
+import com.example.ExampleAPI.student.business.EnrolmentBusiness;
 import com.example.ExampleAPI.student.business.StudentBusiness;
+import com.example.ExampleAPI.student.business.StudentIDCardBusiness;
+import com.example.ExampleAPI.student.exception.StudentException;
+import com.example.ExampleAPI.student.json.BookListJson;
+import com.example.ExampleAPI.student.json.CourseListJson;
+import com.example.ExampleAPI.student.json.EnrolmentListJson;
+import com.example.ExampleAPI.student.json.StudentIDCardListJson;
 import com.example.ExampleAPI.student.json.StudentListJson;
 import com.example.ExampleAPI.student.model.Student;
 import com.example.ExampleAPI.student.payload.StudentPayload;
@@ -29,7 +38,14 @@ public class StudentController {
 	StudentService studentservice;
 	@Autowired
 	StudentBusiness stdBussiness;
-	
+	@Autowired
+	StudentIDCardBusiness stdIdCardBusiness;
+	@Autowired
+	EnrolmentBusiness enrolmentBusiness;
+	@Autowired
+	CourseBusiness courseBusiness;
+	@Autowired
+	BookBusiness bookBusiness;
 	public StudentController(StudentService studentService) {
 		this.studentservice =studentService;
 	}
@@ -58,8 +74,6 @@ public class StudentController {
 		}else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-			
-		
 	}
 	@DeleteMapping("/students/{id}")
 	public ResponseEntity<HttpStatus> deleteStudent(@PathVariable("id") long id){
@@ -71,4 +85,21 @@ public class StudentController {
 			// TODO: handle exception
 		}
 	}
+	@GetMapping(value="/students/{id}/card")
+	public ResponseEntity<StudentIDCardListJson> getStudentIdCardByStudentId(@PathVariable("id") long id)throws StudentException{
+		return ResponseEntity.ok(stdIdCardBusiness.getStudentIdCardByStudentId(id));
+	}
+	@GetMapping(value="/students/{id}/enrolment")
+	public ResponseEntity<EnrolmentListJson> getEnrolmentByStudentId(@PathVariable("id") long id)throws StudentException{
+		return ResponseEntity.ok(enrolmentBusiness.getEnrolmentByStudentId(id));
+	}
+	@GetMapping(value="/students/{id}/book")
+	public ResponseEntity<BookListJson> getBookByStudentId(@PathVariable("id") long id)throws StudentException{
+		return ResponseEntity.ok(bookBusiness.getBookByStudentId(id));
+	}
+	@GetMapping(value="/course/{id}")
+	public ResponseEntity<CourseListJson> getCourseById(@PathVariable("id") long id)throws StudentException{
+		return ResponseEntity.ok(courseBusiness.getCourseId(id));
+	}
+	
 }

@@ -1,5 +1,8 @@
 package com.example.ExampleAPI.student.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,7 +36,8 @@ public class StudentIdCard {
 	private long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="student_id",nullable = false)
+	@JoinColumn(name="student_id",nullable = false,referencedColumnName = "id")
+	@Fetch(FetchMode.JOIN)
 	private Student student_id;
 	
 	@Column(name="card_number", nullable = false, unique = true)
